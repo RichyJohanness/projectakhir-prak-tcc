@@ -1,8 +1,8 @@
 // Ngambil elemen form
-const form = document.querySelector("form");
+const formulir = document.querySelector("form");
 
 // Bikin trigger event submit pada elemen form
-form.addEventListener("submit", (e) => {
+formulir.addEventListener("submit", (e) => {
   e.preventDefault();
   kirim();
 });

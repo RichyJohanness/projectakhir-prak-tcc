@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Buku</title>
+    <title>Data Buku</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -11,6 +11,10 @@
         color: #333;
         margin: 0;
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
 
       a {
@@ -23,7 +27,6 @@
       h1 {
         margin-top: 20px;
         color: #2c3e50;
-        text-align: center;
       }
 
       form {
@@ -34,8 +37,6 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
-        max-width: 600px;
-        margin: 0 auto;
       }
 
       .form-group {
@@ -152,7 +153,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="isbn">Isbn</label>
+        <label for="isbn">ISBN</label>
         <input
           data-id
           id="isbn"
@@ -169,7 +170,7 @@
           <tr>
             <th>ID</th>
             <th>Judul</th>
-            <th>Isbn</th>
+            <th>ISBN</th>
             <th colspan="2">Option</th>
           </tr>
         </thead>
@@ -178,142 +179,6 @@
     </main>
     <div id="notification"></div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("form");
-
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-          kirim();
-        });
-
-        function kirim() {
-          const judulInput = document.querySelector("#judul");
-          const isbnInput = document.querySelector("#isbn");
-
-          const id = judulInput.dataset.id;
-          const judul = judulInput.value;
-          const isbn = isbnInput.value;
-
-          if (id === "") {
-            axios
-              .post("https://buku-jmw7ojw7cq-et.a.run.app/buku", {
-                judul,
-                isbn,
-              })
-              .then(() => {
-                clearForm();
-                getBuku();
-                showNotification("success", "Buku berhasil ditambahkan.");
-              })
-              .catch(() => {
-                showNotification("error", "Gagal menambahkan buku.");
-              });
-          } else {
-            axios
-              .put(`https://buku-jmw7ojw7cq-et.a.run.app/buku/${id}`, {
-                judul,
-                isbn,
-              })
-              .then(() => {
-                clearForm();
-                getBuku();
-                showNotification("success", "Buku berhasil diperbarui.");
-              })
-              .catch(() => {
-                showNotification("error", "Gagal memperbarui buku.");
-              });
-          }
-        }
-
-        function clearForm() {
-          document.querySelector("form").reset();
-          document.querySelector("#judul").removeAttribute("data-id");
-        }
-
-        function getBuku() {
-          axios
-            .get("https://buku-jmw7ojw7cq-et.a.run.app/buku")
-            .then(({ data }) => {
-              const tableBody = document.querySelector("#table-buku");
-              const bukuData = data.data;
-
-              let tableContent = "";
-
-              bukuData.forEach((buku) => {
-                tableContent += `
-                                <tr>
-                                    <td>${buku.id}</td>
-                                    <td>${buku.judul}</td>
-                                    <td>${buku.isbn}</td>
-                                    <td><button data-id=${buku.id} class="btn-edit">Edit</button></td>
-                                    <td><button data-id=${buku.id} class="btn-hapus">Hapus</button></td>
-                                </tr>
-                            `;
-              });
-
-              tableBody.innerHTML = tableContent;
-
-              addEditListener();
-              addDeleteListener();
-            })
-            .catch(() => {
-              showNotification("error", "Gagal mengambil data buku.");
-            });
-        }
-
-        function addEditListener() {
-          const editButtons = document.querySelectorAll(".btn-edit");
-
-          editButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-              const id = button.dataset.id;
-              const judul =
-                button.parentElement.previousElementSibling
-                  .previousElementSibling.textContent;
-              const isbn =
-                button.parentElement.previousElementSibling.textContent;
-
-              document.querySelector("#judul").value = judul;
-              document.querySelector("#isbn").value = isbn;
-              document.querySelector("#judul").dataset.id = id;
-            });
-          });
-        }
-
-        function addDeleteListener() {
-          const deleteButtons = document.querySelectorAll(".btn-hapus");
-
-          deleteButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-              const id = button.dataset.id;
-
-              axios
-                .delete(`https://buku-jmw7ojw7cq-et.a.run.app/buku/${id}`)
-                .then(() => {
-                  getBuku();
-                  showNotification("success", "Buku berhasil dihapus.");
-                })
-                .catch(() => {
-                  showNotification("error", "Gagal menghapus buku.");
-                });
-            });
-          });
-        }
-
-        function showNotification(type, message) {
-          const notification = document.getElementById("notification");
-          notification.textContent = message;
-          notification.className = type;
-
-          setTimeout(() => {
-            notification.textContent = "";
-            notification.className = "";
-          }, 3000);
-        }
-
-        getBuku();
-      });
-    </script>
+    <script src="buku.js"></script>
   </body>
 </html>
