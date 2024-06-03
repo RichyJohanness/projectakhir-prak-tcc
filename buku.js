@@ -21,7 +21,7 @@ function kirim() {
   if (id == "") {
     // Tambah catatan
     axios
-      .post("https://mahasiswa-jmw7ojw7cq-et.a.run.app/mahasiswa", {
+      .post("https://buku-jmw7ojw7cq-et.a.run.app/buku", {
         judul,
         isbn,
       })
@@ -37,7 +37,7 @@ function kirim() {
       .catch((error) => console.log(error.message));
   } else {
     axios
-      .put(`https://mahasiswa-jmw7ojw7cq-et.a.run.app/mahasiswa/${id}`, {
+      .put(`https://buku-jmw7ojw7cq-et.a.run.app/buku/${id}`, {
         judul,
         isbn,
       })
@@ -57,15 +57,15 @@ function kirim() {
 // Ngambil catatan
 function getCatatan() {
   axios
-    .get("https://mahasiswa-jmw7ojw7cq-et.a.run.app/mahasiswa")
+    .get("https://buku-jmw7ojw7cq-et.a.run.app/buku")
     .then(({ data }) => {
-      const table = document.querySelector("#table-mhs");
-      const { data: mahasiswa } = data;
+      const table = document.querySelector("#table-buku");
+      const { data: buku } = data;
       let tampilan = "";
       let no = 1;
 
-      for (const mhs of mahasiswa) {
-        tampilan += tampilkanCatatan(no, mhs);
+      for (const buku of buku) {
+        tampilan += tampilkanCatatan(no, buku);
         no++;
       }
       table.innerHTML = tampilan;
@@ -78,7 +78,7 @@ function getCatatan() {
     });
 }
 
-function tampilkanCatatan(no, mhs) {
+function tampilkanCatatan(no, buku) {
   return `
     <tr>
       <td>${no}</td>
@@ -97,7 +97,7 @@ function hapusCatatan() {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
       axios
-        .delete(`https://mahasiswa-jmw7ojw7cq-et.a.run.app/mahasiswa/${id}`)
+        .delete(`https://buku-jmw7ojw7cq-et.a.run.app/buku/${id}`)
         .then(() => getCatatan())
         .catch((error) => console.log(error));
     });
