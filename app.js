@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/pegawai", pegawaiRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello from dosen-service! 😁");
+  res.send("Hello from pegawai-service! 😁");
 });
 
 // Menjalankan server di port 3001
