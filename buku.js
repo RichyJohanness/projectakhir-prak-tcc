@@ -9,27 +9,27 @@ formulir.addEventListener("submit", (e) => {
 
 function kirim() {
   // Ngambil elemen input
-  const elemen_nama = document.querySelector("#nama");
-  const elemen_nim = document.querySelector("#nim");
+  const elemen_judul = document.querySelector("#judul");
+  const elemen_isbn = document.querySelector("#isbn");
 
-  // Ngambil value (nim) dari elemen input
-  const id = elemen_nama.dataset.id;
-  const nama = elemen_nama.value;
-  const nim = elemen_nim.value;
+  // Ngambil value (isbn) dari elemen input
+  const id = elemen_judul.dataset.id;
+  const judul = elemen_judul.value;
+  const isbn = elemen_isbn.value;
 
   // Ngecek apakah harus POST atau PUT
   if (id == "") {
     // Tambah catatan
     axios
       .post("https://mahasiswa-jmw7ojw7cq-et.a.run.app/mahasiswa", {
-        nama,
-        nim,
+        judul,
+        isbn,
       })
       .then(() => {
         // bersihin formnya
-        elemen_nama.dataset.id = "";
-        elemen_nama.value = "";
-        elemen_nim.value = "";
+        elemen_judul.dataset.id = "";
+        elemen_judul.value = "";
+        elemen_isbn.value = "";
 
         // manggil fungsi get catatan biar datanya di-refresh
         getCatatan();
@@ -38,14 +38,14 @@ function kirim() {
   } else {
     axios
       .put(`https://mahasiswa-jmw7ojw7cq-et.a.run.app/mahasiswa/${id}`, {
-        nama,
-        nim,
+        judul,
+        isbn,
       })
       .then(() => {
         // bersihin formnya
-        elemen_nama.dataset.id = "";
-        elemen_nama.value = "";
-        elemen_nim.value = "";
+        elemen_judul.dataset.id = "";
+        elemen_judul.value = "";
+        elemen_isbn.value = "";
 
         // manggil fungsi get catatan biar datanya direfresh
         getCatatan();
@@ -82,10 +82,10 @@ function tampilkanCatatan(no, mhs) {
   return `
     <tr>
       <td>${no}</td>
-      <td class="nama">${mhs.nama}</td>
-      <td class="nim">${mhs.nim}</td>
-      <td><button data-id=${mhs.id} class='btn-edit'>Edit</button></td>
-      <td><button data-id=${mhs.id} class='btn-hapus'>Hapus</button></td>
+      <td class="judul">${buku.judul}</td>
+      <td class="isbn">${buku.isbn}</td>
+      <td><button data-id=${buku.id} class='btn-edit'>Edit</button></td>
+      <td><button data-id=${buku.id} class='btn-hapus'>Hapus</button></td>
     </tr>
   `;
 }
@@ -110,20 +110,22 @@ function editCatatan() {
   kumpulan_tombol_edit.forEach((tombol_edit) => {
     tombol_edit.addEventListener("click", () => {
       const id = tombol_edit.dataset.id;
-      const nama =
+      const judul =
         tombol_edit.parentElement.parentElement.querySelector(
-          ".nama"
+          ".judul"
         ).innerText;
-      const nim =
-        tombol_edit.parentElement.parentElement.querySelector(".nim").innerText;
+      const isbn =
+        tombol_edit.parentElement.parentElement.querySelector(
+          ".isbn"
+        ).innerText;
 
       // Ngambil elemen input
-      const elemen_nama = document.querySelector("#nama");
-      const elemen_nim = document.querySelector("#nim");
+      const elemen_judul = document.querySelector("#judul");
+      const elemen_isbn = document.querySelector("#isbn");
 
-      elemen_nama.dataset.id = id;
-      elemen_nama.value = nama;
-      elemen_nim.value = nim;
+      elemen_judul.dataset.id = id;
+      elemen_judul.value = judul;
+      elemen_isbn.value = isbn;
     });
   });
 }
