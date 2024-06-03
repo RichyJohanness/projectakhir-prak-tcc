@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buku</title>
-    <link rel="stylesheet" href="style.css" />
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -12,10 +11,6 @@
         color: #333;
         margin: 0;
         padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
       }
 
       a {
@@ -28,6 +23,7 @@
       h1 {
         margin-top: 20px;
         color: #2c3e50;
+        text-align: center;
       }
 
       form {
@@ -38,26 +34,29 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
       }
 
-      form span {
+      .form-group {
         display: flex;
         flex-direction: column;
+        flex: 1;
       }
 
-      form label {
+      label {
         margin-bottom: 5px;
         font-weight: bold;
       }
 
-      form input {
+      input {
         padding: 10px;
         border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 16px;
       }
 
-      form button {
+      button {
         background-color: #3498db;
         color: white;
         padding: 10px 20px;
@@ -69,14 +68,15 @@
         align-self: flex-end;
       }
 
-      form button:hover {
+      button:hover {
         background-color: #2980b9;
       }
 
       main {
         margin-top: 20px;
-        width: 100%;
         max-width: 800px;
+        margin: 0 auto;
+        overflow-x: auto;
       }
 
       table {
@@ -122,13 +122,26 @@
       table td button:hover {
         background-color: #c0392b;
       }
+
+      #notification {
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .success {
+        color: green;
+      }
+
+      .error {
+        color: red;
+      }
     </style>
   </head>
   <body>
     <a href="index.html">Kembali</a>
     <h1>Data Buku</h1>
     <form>
-      <span>
+      <div class="form-group">
         <label for="judul">Judul</label>
         <input
           data-id
@@ -137,20 +150,20 @@
           placeholder="Masukkan judul buku"
           required
         />
-      </span>
-      <span style="margin-left: 1rem">
+      </div>
+      <div class="form-group">
         <label for="isbn">Isbn</label>
         <input
           data-id
           id="isbn"
           type="text"
-          placeholder="Masukkan isbn"
+          placeholder="Masukkan ISBN"
           required
         />
-      </span>
+      </div>
       <button type="submit">Simpan</button>
     </form>
-    <main style="margin-top: 1rem">
+    <main>
       <table>
         <thead>
           <tr>
@@ -163,7 +176,144 @@
         <tbody id="table-buku"></tbody>
       </table>
     </main>
+    <div id="notification"></div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="buku.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          kirim();
+        });
+
+        function kirim() {
+          const judulInput = document.querySelector("#judul");
+          const isbnInput = document.querySelector("#isbn");
+
+          const id = judulInput.dataset.id;
+          const judul = judulInput.value;
+          const isbn = isbnInput.value;
+
+          if (id === "") {
+            axios
+              .post("https://buku-jmw7ojw7cq-et.a.run.app/buku", {
+                judul,
+                isbn,
+              })
+              .then(() => {
+                clearForm();
+                getBuku();
+                showNotification("success", "Buku berhasil ditambahkan.");
+              })
+              .catch(() => {
+                showNotification("error", "Gagal menambahkan buku.");
+              });
+          } else {
+            axios
+              .put(`https://buku-jmw7ojw7cq-et.a.run.app/buku/${id}`, {
+                judul,
+                isbn,
+              })
+              .then(() => {
+                clearForm();
+                getBuku();
+                showNotification("success", "Buku berhasil diperbarui.");
+              })
+              .catch(() => {
+                showNotification("error", "Gagal memperbarui buku.");
+              });
+          }
+        }
+
+        function clearForm() {
+          document.querySelector("form").reset();
+          document.querySelector("#judul").removeAttribute("data-id");
+        }
+
+        function getBuku() {
+          axios
+            .get("https://buku-jmw7ojw7cq-et.a.run.app/buku")
+            .then(({ data }) => {
+              const tableBody = document.querySelector("#table-buku");
+              const bukuData = data.data;
+
+              let tableContent = "";
+
+              bukuData.forEach((buku) => {
+                tableContent += `
+                                <tr>
+                                    <td>${buku.id}</td>
+                                    <td>${buku.judul}</td>
+                                    <td>${buku.isbn}</td>
+                                    <td><button data-id=${buku.id} class="btn-edit">Edit</button></td>
+                                    <td><button data-id=${buku.id} class="btn-hapus">Hapus</button></td>
+                                </tr>
+                            `;
+              });
+
+              tableBody.innerHTML = tableContent;
+
+              addEditListener();
+              addDeleteListener();
+            })
+            .catch(() => {
+              showNotification("error", "Gagal mengambil data buku.");
+            });
+        }
+
+        function addEditListener() {
+          const editButtons = document.querySelectorAll(".btn-edit");
+
+          editButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+              const id = button.dataset.id;
+              const judul =
+                button.parentElement.previousElementSibling
+                  .previousElementSibling.textContent;
+              const isbn =
+                button.parentElement.previousElementSibling.textContent;
+
+              document.querySelector("#judul").value = judul;
+              document.querySelector("#isbn").value = isbn;
+              document.querySelector("#judul").dataset.id = id;
+            });
+          });
+        }
+
+        function addDeleteListener() {
+          const deleteButtons = document.querySelectorAll(".btn-hapus");
+
+          deleteButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+              const id = button.dataset.id;
+
+              axios
+                .delete(`https://buku-jmw7ojw7cq-et.a.run.app/buku/${id}`)
+                .then(() => {
+                  getBuku();
+                  showNotification("success", "Buku berhasil dihapus.");
+                })
+                .catch(() => {
+                  showNotification("error", "Gagal menghapus buku.");
+                });
+            });
+          });
+        }
+
+        function showNotification(type, message) {
+          const notification = document.getElementById("notification");
+          notification.textContent = message;
+          notification.className = type;
+
+          setTimeout(() => {
+            notification.textContent = "";
+            notification.className = "";
+          }, 3000);
+        }
+
+        getBuku();
+      });
+    </script>
   </body>
 </html>
