@@ -1,0 +1,15 @@
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: rgb(77, 77, 77);
+}
