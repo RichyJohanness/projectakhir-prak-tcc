@@ -14,19 +14,58 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        min-height: 100vh;
       }
 
       a {
-        color: #3498db;
+        color: #6e8658;
         text-decoration: none;
-        margin-top: 20px;
         font-weight: bold;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      a svg {
+        margin-right: 8px;
       }
 
       h1 {
-        margin-top: 20px;
-        color: #2c3e50;
+        margin-top: 60px;
+        color: #343a40;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        max-width: 1000px;
+        width: 100%;
+        align-items: flex-start;
+      }
+
+      .left-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .form-container {
+        animation: slideInFromLeft 0.5s ease-in-out;
+      }
+
+      @keyframes slideInFromLeft {
+        0% {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
       }
 
       form {
@@ -58,7 +97,7 @@
       }
 
       button {
-        background-color: #3498db;
+        background-color: #6e8658;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -70,13 +109,19 @@
       }
 
       button:hover {
-        background-color: #2980b9;
+        background-color: #556744;
+      }
+
+      .table-container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        animation: slideInFromLeft 0.5s ease-in-out;
       }
 
       main {
-        margin-top: 20px;
-        max-width: 800px;
-        margin: 0 auto;
+        width: 100%;
         overflow-x: auto;
       }
 
@@ -84,100 +129,156 @@
         width: 100%;
         border-collapse: collapse;
         background-color: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
       }
 
-      table th,
-      table td {
+      th,
+      td {
         padding: 10px;
         border: 1px solid #ddd;
         text-align: left;
       }
 
-      table th {
-        background-color: #3498db;
+      th {
+        background-color: #6e8658;
         color: white;
       }
 
-      table tbody tr:nth-child(odd) {
+      tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
       }
 
-      table tbody tr:hover {
+      tbody tr:hover {
         background-color: #f1f1f1;
       }
 
-      table th[colspan="2"] {
-        text-align: center;
+      .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: slideInFromRight 0.5s ease-in-out;
       }
 
-      table td button {
-        background-color: #e74c3c;
+      @keyframes slideInFromRight {
+        0% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #6e8658;
         color: white;
-        padding: 5px 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 1000;
+      }
+
+      .notification.show {
+        display: block;
+      }
+
+      .btn {
+        background-color: transparent;
         border: none;
-        border-radius: 3px;
         cursor: pointer;
+        color: #6e8658;
+        font-size: 1.2em;
       }
 
-      table td button:hover {
-        background-color: #c0392b;
+      .btn:hover {
+        color: #556744;
       }
 
-      #notification {
-        text-align: center;
-        margin-top: 10px;
+      .btn-edit {
+        color: #6e8658;
       }
 
-      .success {
-        color: green;
-      }
-
-      .error {
+      .btn-delete {
         color: red;
       }
     </style>
   </head>
   <body>
-    <a href="index.html">Kembali</a>
+    <a href="index.html">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24"
+        viewBox="0 96 960 960"
+        width="24"
+        fill="#6e8658"
+      >
+        <path
+          d="M480 936 160 616l320-320 56 56-213 213h537v80H323l213 213-56 56Z"
+        />
+      </svg>
+      Back
+    </a>
     <h1>Data Buku</h1>
-    <form>
-      <div class="form-group">
-        <label for="judul">Judul</label>
-        <input
-          data-id
-          id="judul"
-          type="text"
-          placeholder="Masukkan judul buku"
-          required
-        />
+    <div class="container">
+      <div class="left-container">
+        <div class="form-container">
+          <form>
+            <div class="form-group">
+              <label for="judul">Judul</label>
+              <input
+                data-id
+                id="judul"
+                type="text"
+                placeholder="Masukkan judul buku"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="isbn">ISBN</label>
+              <input
+                data-id
+                id="isbn"
+                type="text"
+                placeholder="Masukkan ISBN"
+                required
+              />
+            </div>
+            <button type="submit">Simpan</button>
+          </form>
+        </div>
+        <div class="table-container">
+          <main>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>ID</th>
+                  <th>Judul</th>
+                  <th>ISBN</th>
+                  <th colspan="2">Option</th>
+                </tr>
+              </thead>
+              <tbody id="table-buku"></tbody>
+            </table>
+          </main>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="isbn">ISBN</label>
-        <input
-          data-id
-          id="isbn"
-          type="text"
-          placeholder="Masukkan ISBN"
-          required
-        />
+      <div class="image-container">
+        <img src="buku.png" alt="Book" />
       </div>
-      <button type="submit">Simpan</button>
-    </form>
-    <main>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Judul</th>
-            <th>ISBN</th>
-            <th colspan="2">Option</th>
-          </tr>
-        </thead>
-        <tbody id="table-buku"></tbody>
-      </table>
-    </main>
-    <div id="notification"></div>
+    </div>
+    <div id="notification" class="notification"></div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="buku.js"></script>
   </body>

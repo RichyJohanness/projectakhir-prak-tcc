@@ -14,24 +14,57 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        min-height: 100vh;
       }
 
       a {
-        color: #3498db;
+        color: #007bff;
         text-decoration: none;
-        margin-top: 20px;
         font-weight: bold;
+        position: absolute;
+        top: 20px;
+        left: 20px;
       }
 
       h1 {
-        margin-top: 20px;
-        color: #2c3e50;
+        margin-top: 60px;
+        color: #343a40;
       }
 
-      form {
+      .container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        max-width: 1000px;
+        width: 100%;
+        align-items: flex-start;
+      }
+
+      .left-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .form-container {
+        animation: slideInFromLeft 0.5s ease-in-out;
+      }
+
+      @keyframes slideInFromLeft {
+        0% {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .form-container form {
         background-color: #ffffff;
-        padding: 20px;
+        padding: 10px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         display: flex;
@@ -39,27 +72,29 @@
         gap: 1rem;
       }
 
-      form span {
+      .form-container form span {
         display: flex;
         flex-direction: column;
+        flex: 1;
       }
 
-      form label {
+      .form-container form label {
         margin-bottom: 5px;
         font-weight: bold;
       }
 
-      form input {
-        padding: 10px;
+      .form-container form input {
+        padding: 5px;
         border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 16px;
+        width: 100%;
       }
 
-      form button {
-        background-color: #3498db;
+      .form-container form button {
+        background-color: #6e8658;
         color: white;
-        padding: 10px 20px;
+        padding: 6px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
@@ -68,162 +103,238 @@
         align-self: flex-end;
       }
 
-      form button:hover {
-        background-color: #2980b9;
+      .form-container form button:hover {
+        background-color: #556744;
+      }
+
+      .table-container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        animation: slideInFromLeft 0.5s ease-in-out;
       }
 
       main {
-        margin-top: 20px;
         width: 100%;
-        max-width: 800px;
+        overflow-x: auto;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
         background-color: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
       }
 
-      table th,
-      table td {
+      th,
+      td {
         padding: 10px;
         border: 1px solid #ddd;
         text-align: left;
       }
 
-      table th {
-        background-color: #3498db;
+      th {
+        background-color: #6e8658;
         color: white;
       }
 
-      table tbody tr:nth-child(odd) {
+      tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
       }
 
-      table tbody tr:hover {
+      tbody tr:hover {
         background-color: #f1f1f1;
       }
 
-      table th[colspan="2"] {
-        text-align: center;
+      .image-container {
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: slideInFromRight 0.5s ease-in-out;
       }
 
-      table td button {
-        background-color: #e74c3c;
-        color: white;
-        padding: 5px 10px;
+      @keyframes slideInFromRight {
+        0% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-kembali {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: transparent;
         border: none;
-        border-radius: 3px;
         cursor: pointer;
+        font-size: 1.5em;
+        color: #6e8658;
+        display: flex;
+        align-items: center;
       }
 
-      table td button:hover {
-        background-color: #c0392b;
+      .btn-kembali:hover {
+        color: #556744;
+      }
+
+      .btn {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: #6e8658;
+        font-size: 1.2em;
+      }
+
+      .btn:hover {
+        color: #556744;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #6e8658;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 1000;
+      }
+
+      .notification.show {
+        display: block;
       }
     </style>
   </head>
   <body>
-    <a href="index.html">Kembali</a>
+    <button class="btn-kembali" onclick="window.history.back()">
+      &#8592; Back
+    </button>
     <h1>Data Pegawai</h1>
-    <form>
-      <span>
-        <label for="nama">Nama</label>
-        <input
-          data-id
-          id="nama"
-          type="text"
-          placeholder="Masukkan nama"
-          required
-        />
-      </span>
-      <span style="margin-left: 1rem">
-        <label for="nip">NIP</label>
-        <input
-          data-id
-          id="nip"
-          type="text"
-          placeholder="Masukkan NIP"
-          required
-        />
-      </span>
-      <button type="submit">Simpan</button>
-    </form>
-    <main style="margin-top: 1rem">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>NIP</th>
-            <th colspan="2">Option</th>
-          </tr>
-        </thead>
-        <tbody id="table-pegawai"></tbody>
-      </table>
-    </main>
+    <div class="container">
+      <div class="left-container">
+        <div class="form-container">
+          <form>
+            <span>
+              <label for="nama">Nama</label>
+              <input
+                data-id
+                id="nama"
+                type="text"
+                placeholder="Masukkan nama"
+                required
+              />
+            </span>
+            <span>
+              <label for="nip">NIP</label>
+              <input
+                data-id
+                id="nip"
+                type="text"
+                placeholder="Masukkan NIP"
+                required
+              />
+            </span>
+            <button type="submit">Simpan</button>
+          </form>
+        </div>
+        <div class="table-container">
+          <main>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>NIP</th>
+                  <th colspan="2">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="table-pegawai"></tbody>
+            </table>
+          </main>
+        </div>
+      </div>
+      <div class="image-container">
+        <img src="pegawai.png" alt="Pegawai" />
+      </div>
+    </div>
+    <div id="notification" class="notification"></div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      // Ngambil elemen form
       const form = document.querySelector("form");
+      const notification = document.getElementById("notification");
 
-      // Bikin trigger event submit pada elemen form
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         kirim();
       });
 
+      function showNotification(message) {
+        notification.innerText = message;
+        notification.classList.add("show");
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
       function kirim() {
-        // Ngambil elemen input
         const elemen_nama = document.querySelector("#nama");
         const elemen_nip = document.querySelector("#nip");
 
-        // Ngambil value dari elemen input
         const id = elemen_nama.dataset.id;
         const nama = elemen_nama.value;
         const nip = elemen_nip.value;
 
-        // Ngecek apakah harus POST atau PUT
         if (id == "") {
-          // Tambah pegawai
           axios
             .post("https://pegawai-jmw7ojw7cq-et.a.run.app/pegawai", {
               nama,
               nip,
             })
             .then(() => {
-              // Bersihin form
               elemen_nama.dataset.id = "";
               elemen_nama.value = "";
               elemen_nip.value = "";
-
-              // Manggil fungsi untuk refresh data pegawai
               getPegawai();
-              alert("Pegawai berhasil ditambahkan.");
+              showNotification("Pegawai berhasil ditambahkan.");
             })
-            .catch((error) => console.log(error.message));
+            .catch((error) => {
+              console.log(error.message);
+              showNotification("Gagal menambahkan pegawai.");
+            });
         } else {
-          // Edit pegawai
           axios
             .put(`https://pegawai-jmw7ojw7cq-et.a.run.app/pegawai/${id}`, {
               nama,
               nip,
             })
             .then(() => {
-              // Bersihin form
               elemen_nama.dataset.id = "";
               elemen_nama.value = "";
               elemen_nip.value = "";
-
-              // Manggil fungsi untuk refresh data pegawai
               getPegawai();
-              alert("Pegawai berhasil diupdate.");
+              showNotification("Pegawai berhasil diupdate.");
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+              console.log(error);
+              showNotification("Gagal mengupdate pegawai.");
+            });
         }
       }
 
-      // Ngambil data pegawai
       function getPegawai() {
         axios
           .get("https://pegawai-jmw7ojw7cq-et.a.run.app/pegawai")
@@ -231,70 +342,51 @@
             const table = document.querySelector("#table-pegawai");
             const { data: pegawai } = data;
             let tampilan = "";
-            let no = 1;
 
-            pegawai.forEach((item) => {
-              tampilan += tampilkanPegawai(no, item);
-              no++;
+            pegawai.forEach((item, index) => {
+              tampilan += `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>${item.nama}</td>
+                  <td>${item.nip}</td>
+                  <td><button class="btn" onclick="editPegawai('${item.id}', '${
+                item.nama
+              }', '${item.nip}')">&#9998;</button></td>
+                  <td><button class="btn" onclick="hapusPegawai('${
+                    item.id
+                  }')">&#10060;</button></td>
+                </tr>
+              `;
             });
             table.innerHTML = tampilan;
-
-            hapusPegawai();
-            editPegawai();
           })
           .catch((error) => {
             console.log(error.message);
           });
       }
 
-      function tampilkanPegawai(no, pegawai) {
-        return `
-                <tr>
-                    <td>${no}</td>
-                    <td class="nama">${pegawai.nama}</td>
-                    <td class="nip">${pegawai.nip}</td>
-                    <td><button data-id=${pegawai.id} class='btn-edit'>Edit</button></td>
-                    <td><button data-id=${pegawai.id} class='btn-hapus'>Hapus</button></td>
-                </tr>
-            `;
+      function editPegawai(id, nama, nip) {
+        const elemen_nama = document.querySelector("#nama");
+        const elemen_nip = document.querySelector("#nip");
+
+        elemen_nama.dataset.id = id;
+        elemen_nama.value = nama;
+        elemen_nip.value = nip;
       }
 
-      function hapusPegawai() {
-        const btnHapusList = document.querySelectorAll(".btn-hapus");
-
-        btnHapusList.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const id = btn.dataset.id;
-            axios
-              .delete(`https://pegawai-jmw7ojw7cq-et.a.run.app/pegawai/${id}`)
-              .then(() => {
-                getPegawai();
-                alert("Pegawai berhasil dihapus.");
-              })
-              .catch((error) => console.log(error));
-          });
-        });
-      }
-
-      function editPegawai() {
-        const btnEditList = document.querySelectorAll(".btn-edit");
-
-        btnEditList.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const id = btn.dataset.id;
-            const nama =
-              btn.parentElement.parentElement.querySelector(".nama").innerText;
-            const nip =
-              btn.parentElement.parentElement.querySelector(".nip").innerText;
-
-            const elemen_nama = document.querySelector("#nama");
-            const elemen_nip = document.querySelector("#nip");
-
-            elemen_nama.dataset.id = id;
-            elemen_nama.value = nama;
-            elemen_nip.value = nip;
-          });
-        });
+      function hapusPegawai(id) {
+        if (confirm("Apakah Anda yakin ingin menghapus pegawai ini?")) {
+          axios
+            .delete(`https://pegawai-jmw7ojw7cq-et.a.run.app/pegawai/${id}`)
+            .then(() => {
+              getPegawai();
+              showNotification("Pegawai berhasil dipecat.");
+            })
+            .catch((error) => {
+              console.log(error);
+              showNotification("Gagal memecat pegawai.");
+            });
+        }
       }
 
       getPegawai();
